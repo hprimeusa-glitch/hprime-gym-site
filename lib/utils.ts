@@ -18,7 +18,7 @@ export function slugToTitle(slug: string): string {
 
 export const PHONE_NUMBER = '+17207066650';
 export const PHONE_DISPLAY = '(720) 706-6650';
-export const BUSINESS_EMAIL = 'hprime.gym@gmail.com';
+export const BUSINESS_EMAIL = 'help@h-prime-co.com';
 export const BUSINESS_NAME = 'H-Prime Gym Equipment Repair';
 export const BUSINESS_ADDRESS = 'Denver, CO';
 // Live GBP values (checked 2026-07-10, place_id ChIJ-9PIIigRJy0Rt-5gcmeOzAo, profile "H-Prime Fitness Equipment Repair")
