@@ -117,7 +117,7 @@ export default async function BrandApplianceRepairPage({ params }: PageProps) {
                   <Users className="w-10 h-10 text-orange-600" />
                 </div>
               </div>
-              <h3 className="text-xl font-bold mb-3 text-gray-900">20+ Years Experience</h3>
+              <h3 className="text-xl font-bold mb-3 text-gray-900">Certified Technicians</h3>
               <p className="text-gray-600">Trusted by Denver Metro homes and gyms</p>
             </div>
           </div>

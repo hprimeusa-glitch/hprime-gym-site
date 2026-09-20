@@ -92,7 +92,7 @@ export default async function CityPage({ params }: PageProps) {
                   <CheckCircle className="w-10 h-10" style={{ color: '#1B2A4A' }} />
                 </div>
               </div>
-              <h3 className="text-xl font-bold mb-3 text-gray-900">Factory-Trained Technicians</h3>
+              <h3 className="text-xl font-bold mb-3 text-gray-900">Experienced Technicians</h3>
               <p className="text-gray-600">
                 Experienced gym equipment technicians. Professional service you can trust for all major fitness brands.
               </p>
