@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import { isIndexable } from '@/lib/data/indexAllowlist';
 
 interface SEOParams {
   city?: string;
@@ -60,6 +61,12 @@ export function generatePageMetadata(params: SEOParams): Metadata {
   const canonicalUrl = buildCanonicalUrl(params);
   const ogImageUrl = `${SITE_URL}/logo-og.png`;
 
+  // Pages outside the index allowlist stay reachable and keep passing link equity,
+  // but do not enter the index. Regenerate the list with
+  // Clients/H-Prime/SEO/build-index-allowlist.py, never edit it by hand.
+  const canonicalPath = canonicalUrl.replace(SITE_URL, '') || '/';
+  const indexable = isIndexable(canonicalPath);
+
   return {
     title: fullTitle,
     description,
@@ -88,6 +95,7 @@ export function generatePageMetadata(params: SEOParams): Metadata {
     alternates: {
       canonical: canonicalUrl,
     },
+    ...(indexable ? {} : { robots: { index: false, follow: true } }),
   };
 }
 

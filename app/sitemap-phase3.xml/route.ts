@@ -1,4 +1,5 @@
 import { MetadataRoute } from 'next';
+import { isIndexable } from '@/lib/data/indexAllowlist';
 import { appliances } from '@/lib/data/appliances';
 import { brands } from '@/lib/data/brands';
 import { checkBrandApplianceMatch } from '@/lib/data/serviceBrands';
@@ -23,10 +24,16 @@ export async function GET() {
       }))
   );
 
+  // Only allowlisted pages are declared. Everything else renders `noindex, follow`;
+  // regenerate with Clients/H-Prime/SEO/build-index-allowlist.py.
+  const indexable = routes.filter((route) =>
+    isIndexable(new URL(route.url as string).pathname)
+  );
+
   // Generate XML
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${routes
+${indexable
   .map(
     (route) => `  <url>
     <loc>${route.url}</loc>
