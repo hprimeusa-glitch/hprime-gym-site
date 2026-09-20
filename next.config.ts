@@ -37,22 +37,14 @@ const nextConfig: NextConfig = {
         ],
       },
       {
-        // Cache static assets for brands
-        source: '/brands/:path*',
+        // Preview deployments must never be indexed: the canonical points at the
+        // production domain, but the alias is still crawlable on its own.
+        source: '/:path*',
+        has: [{ type: 'host', value: '.*\\.vercel\\.app' }],
         headers: [
           {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
-        ],
-      },
-      {
-        // Cache static assets for equipment pages
-        source: '/equipment/:path*',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
+            key: 'X-Robots-Tag',
+            value: 'noindex, nofollow',
           },
         ],
       },

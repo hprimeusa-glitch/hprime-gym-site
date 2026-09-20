@@ -1,4 +1,4 @@
-import { cities } from '@/lib/data/cities';
+import { publicCities as cities } from '@/lib/data/cities';
 import { counties } from '@/lib/data/counties';
 import { MapPin, Phone } from 'lucide-react';
 import Link from 'next/link';

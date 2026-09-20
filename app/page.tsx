@@ -2,7 +2,7 @@ import Hero from '@/components/Hero';
 import Reviews from '@/components/Reviews';
 import BrandsSection from '@/components/BrandsSection';
 import { appliances } from '@/lib/data/appliances';
-import { cities } from '@/lib/data/cities';
+import { publicCities as cities } from '@/lib/data/cities';
 import { reviews } from '@/lib/data/reviews';
 import { CheckCircle, Clock, Users, Wrench } from 'lucide-react';
 import Link from 'next/link';

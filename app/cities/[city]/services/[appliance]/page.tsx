@@ -29,6 +29,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const appliance = appliances.find(a => a.slug === cleanApplianceSlug);
   if (!city || !appliance) return {};
   
+
+  // Geo-test fixture: still reachable for testing the middleware, never indexed.
+  if (city.county === 'test') {
+    return { ...generatePageMetadata({ city: citySlug, appliance: cleanApplianceSlug }), robots: { index: false, follow: false } };
+  }
+
   return generatePageMetadata({ city: citySlug, appliance: cleanApplianceSlug });
 }
 

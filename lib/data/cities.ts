@@ -59,6 +59,11 @@ export const cities: City[] = [
   { slug: 'limassol', name: 'Limassol', county: 'test', zipCodes: [] },
 ];
 
+// Geo-test fixtures (county 'test': Holon, Tel Aviv, Limassol) exist so the middleware
+// and /api/test-geo can be exercised from outside Colorado. They must never reach a
+// public URL: sitemaps, static params and listings all read publicCities instead.
+export const publicCities: City[] = cities.filter(city => city.county !== 'test');
+
 export function getCitiesByCounty(county: string): City[] {
   return cities.filter(city => city.county === county);
 }

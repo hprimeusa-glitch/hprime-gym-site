@@ -6,7 +6,7 @@ import Hero from '@/components/Hero';
 import Reviews from '@/components/Reviews';
 import SEOContent from '@/components/SEOContent';
 import BrandsSection from '@/components/BrandsSection';
-import { cities, getCitiesByCounty } from '@/lib/data/cities';
+import { cities, publicCities, getCitiesByCounty } from '@/lib/data/cities';
 import { appliances } from '@/lib/data/appliances';
 import { generatePageMetadata } from '@/lib/seo/metadata';
 import { generateLocalBusinessSchema, generateServiceSchema, generateBreadcrumbSchema } from '@/lib/seo/schema';
@@ -21,7 +21,7 @@ interface PageProps {
 // export const dynamicParams = true;
 
 export async function generateStaticParams() {
-  return cities.map((city) => ({
+  return publicCities.map((city) => ({
     city: city.slug,
   }));
 }
@@ -30,6 +30,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { city: citySlug } = await params;
   const city = cities.find(c => c.slug === citySlug);
   if (!city) return {};
+
+  // Geo-test fixture: still reachable for testing the middleware, never indexed.
+  if (city.county === 'test') {
+    return { ...generatePageMetadata({ city: citySlug }), robots: { index: false, follow: false } };
+  }
 
   return generatePageMetadata({ city: citySlug });
 }

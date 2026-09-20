@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 import { appliances } from '@/lib/data/appliances';
 import { brands } from '@/lib/data/brands';
-import { cities } from '@/lib/data/cities';
+import { publicCities as cities } from '@/lib/data/cities';
 
 /**
  * PHASE 2 SITEMAP

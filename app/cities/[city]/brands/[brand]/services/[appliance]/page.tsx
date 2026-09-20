@@ -33,12 +33,19 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const brand = brands.find(b => b.slug === cleanBrandSlug);
   const appliance = appliances.find(a => a.slug === cleanApplianceSlug);
   if (!city || !brand || !appliance) return {};
-  
-  return generatePageMetadata({ 
-    city: citySlug, 
-    brand: cleanBrandSlug, 
-    appliance: cleanApplianceSlug 
+
+  const meta = generatePageMetadata({
+    city: citySlug,
+    brand: cleanBrandSlug,
+    appliance: cleanApplianceSlug
   });
+
+  // Geo-test fixture: still reachable for testing the middleware, never indexed.
+  if (city.county === 'test') {
+    return { ...meta, robots: { index: false, follow: false } };
+  }
+
+  return meta;
 }
 
 export default async function CityBrandApplianceRepairPage({ params }: PageProps) {
