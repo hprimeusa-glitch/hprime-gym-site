@@ -1,3 +1,5 @@
+import { GOOGLE_RATING, GOOGLE_REVIEW_COUNT } from '@/lib/utils';
+
 interface SchemaParams {
   city?: string;
   appliance?: string;
@@ -9,9 +11,7 @@ const SITE_URL = 'https://www.hprime-gym.com';
 const BUSINESS_NAME = 'H-Prime Gym Equipment Repair';
 const PHONE = '+17207066650';
 const PHONE_DISPLAY = '(720) 706-6650';
-// Live GBP values (checked 2026-07-10, place_id ChIJ-9PIIigRJy0Rt-5gcmeOzAo)
-const GOOGLE_RATING = 5.0;
-const REVIEW_COUNT = 9;
+const REVIEW_COUNT = GOOGLE_REVIEW_COUNT;
 
 export function generateLocalBusinessSchema(params: SchemaParams) {
   const { city, appliance, brand, county } = params;
