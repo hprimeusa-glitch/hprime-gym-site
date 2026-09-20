@@ -64,6 +64,14 @@ export async function GET() {
       priority: 0.9,
     },
 
+    // Parts page: indexable, but no route was declaring it
+    {
+      url: `${baseUrl}/parts`,
+      lastModified: now,
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    },
+
     // Legal pages are noindex — intentionally excluded from the sitemap
   ];
 
