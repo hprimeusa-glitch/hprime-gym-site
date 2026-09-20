@@ -27,7 +27,7 @@ const homepageFaqs = [
   { q: 'Can you repair commercial gym equipment?', a: 'Yes, we service both residential and commercial gym equipment including treadmills, ellipticals, stationary bikes, rowing machines, weight machines, and more.' },
   { q: 'How long does a treadmill typically last?', a: 'A quality treadmill lasts 7–12 years with proper maintenance. Regular belt lubrication, cleaning, and timely repairs can significantly extend its lifespan.' },
   { q: 'Do you service all gym equipment brands?', a: 'Yes, we repair all major brands including Life Fitness, Precor, Peloton, NordicTrack, Bowflex, Cybex, Technogym, and many more.' },
-  { q: 'Are your technicians certified?', a: 'Yes, our technicians are factory-trained on all major gym equipment brands and receive ongoing training to stay current with the latest models and technology.' },
+  { q: 'Are your technicians certified?', a: 'Yes. Our technicians work on all major gym equipment brands and keep up with new models as they come out.' },
 ];
 
 export default function HomePage() {
@@ -85,7 +85,7 @@ export default function HomePage() {
               </div>
               <h3 className="text-xl font-bold mb-3 text-gray-900">Factory-Trained Technicians</h3>
               <p className="text-gray-600">
-                Factory-trained gym equipment technicians. Professional service you can trust for all major fitness brands.
+                Experienced gym equipment technicians. Professional service you can trust for all major fitness brands.
               </p>
             </div>
             <div className="bg-white p-6 rounded-lg shadow-md text-center">
@@ -140,7 +140,7 @@ export default function HomePage() {
               </p>
 
               <p className="text-base md:text-lg leading-relaxed">
-                Our factory-trained gym equipment technicians provide <strong>same-day service</strong> across the Denver Metro area —
+                Our gym equipment technicians provide <strong>same-day service</strong> across the Denver Metro area —
                 Denver, Aurora, Lakewood, Arvada, and 30+ surrounding cities. Only $99 diagnostic fee, credited toward your repair.
               </p>
             </div>

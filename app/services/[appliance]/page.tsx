@@ -113,7 +113,7 @@ export default async function ApplianceRepairPage({ params }: PageProps) {
               </div>
               <h3 className="text-xl font-bold mb-3 text-gray-900">Expert Technicians</h3>
               <p className="text-gray-600">
-                Factory-trained technicians specializing in gym equipment repair across the Denver Metro area. Certified and experienced.
+                Experienced technicians specializing in gym equipment repair across the Denver Metro area. Certified and experienced.
               </p>
             </div>
             <div className="bg-white p-6 rounded-lg shadow-md text-center">

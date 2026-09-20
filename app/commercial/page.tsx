@@ -8,7 +8,7 @@ import { generateLocalBusinessSchema, generateFAQSchema } from '@/lib/seo/schema
 export const metadata: Metadata = {
   title: 'Commercial Gym Equipment Repair in Denver | H-Prime',
   description:
-    'Professional commercial gym equipment repair in Denver Metro — gyms, fitness centers, health clubs, hotels. Same-day service for treadmills, ellipticals, stationary bikes, rowing machines, weight machines and more. Factory-trained technicians.',
+    'Professional commercial gym equipment repair in Denver Metro — gyms, fitness centers, health clubs, hotels. Same-day service for treadmills, ellipticals, stationary bikes, rowing machines, weight machines and more. Experienced technicians.',
   alternates: { canonical: 'https://www.hprime-gym.com/commercial' },
 };
 
@@ -90,7 +90,7 @@ const whyChooseUs = [
     icon: <Wrench className="w-10 h-10" style={{ color: '#1B2A4A' }} />,
     title: 'Commercial-Grade Expertise',
     description:
-      'Our factory-trained technicians specialize in commercial gym equipment — not just residential. We carry the right parts for major fitness brands.',
+      'Our technicians specialize in commercial gym equipment — not just residential. We carry the right parts for major fitness brands.',
   },
   {
     icon: <ShieldCheck className="w-10 h-10" style={{ color: '#1B2A4A' }} />,
@@ -258,7 +258,7 @@ export default function CommercialPage() {
                 Lakewood, Arvada, and 30+ surrounding cities.
               </p>
               <p className="text-base md:text-lg leading-relaxed">
-                Our factory-trained technicians specialize in commercial-grade fitness equipment from brands like Life Fitness, Precor, Cybex,
+                Our technicians specialize in commercial-grade fitness equipment from brands like Life Fitness, Precor, Cybex,
                 Technogym, Matrix, and more. We stock common parts to complete most repairs in a single visit — so your gym gets back
                 to full operation quickly.
               </p>
@@ -307,7 +307,7 @@ export default function CommercialPage() {
           </h2>
           <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
             Call now for priority scheduling. Same-day service available across Denver Metro.
-            Factory-trained technicians, fully insured, $99 commercial diagnostic fee credited toward repair.
+            Experienced technicians, fully insured, $99 commercial diagnostic fee credited toward repair.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a

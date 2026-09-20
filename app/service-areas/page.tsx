@@ -63,7 +63,7 @@ export default function ServiceAreasPage() {
             <div className="text-gray-700 space-y-4">
               <p className="text-base md:text-lg leading-relaxed">
                 <strong>H-Prime Gym Equipment Repair</strong> is the trusted choice for gym equipment
-                repair in Denver Metro area. Our factory-trained technicians provide same-day service to homes and commercial gyms
+                repair in Denver Metro area. Our technicians provide same-day service to homes and commercial gyms
                 in Denver, Arapahoe, Jefferson, Adams, Douglas, and Boulder counties.
               </p>
               <p className="text-base md:text-lg leading-relaxed">

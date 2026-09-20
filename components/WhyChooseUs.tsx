@@ -2,7 +2,7 @@ import { CheckCircle, Clock, Users, Wrench } from 'lucide-react';
 import { BUSINESS_NAME } from '@/lib/utils';
 
 const reasons = [
-  { icon: CheckCircle, title: 'Certified Technicians', text: 'Factory-trained technicians for all major gym equipment brands. Professional service you can trust.' },
+  { icon: CheckCircle, title: 'Certified Technicians', text: 'Experienced technicians for all major gym equipment brands. Professional service you can trust.' },
   { icon: Clock, title: 'Same-Day Service', text: "Same-day or next-day appointments available. We know your gym can't wait — we respond fast." },
   { icon: Users, title: 'Trusted by Gyms', text: 'Denver gyms and home fitness owners trust us for fast, reliable equipment repairs.' },
   { icon: Wrench, title: 'Upfront Pricing', text: 'Transparent pricing with no hidden fees. Fully insured for your peace of mind.' },
