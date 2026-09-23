@@ -7,12 +7,14 @@ import Reviews from '@/components/Reviews';
 import WhyChooseUs from "@/components/WhyChooseUs";
 import BrandsSection from "@/components/BrandsSection";
 import SEOContent from '@/components/SEOContent';
+import ServiceDeepPage from '@/components/ServiceDeepPage';
 import { appliances } from '@/lib/data/appliances';
 import { brands } from '@/lib/data/brands';
 import { getBrandsForAppliance } from '@/lib/data/serviceBrands';
 import { getEquipmentImage } from '@/lib/data/equipmentImages';
+import { serviceContent } from '@/lib/data/serviceContent';
 import { generatePageMetadata } from '@/lib/seo/metadata';
-import { generateLocalBusinessSchema, generateServiceSchema, generateBreadcrumbSchema } from '@/lib/seo/schema';
+import { generateLocalBusinessSchema, generateServiceSchema, generateBreadcrumbSchema, generateFAQSchema } from '@/lib/seo/schema';
 
 interface PageProps {
   params: Promise<{
@@ -35,8 +37,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const cleanSlug = applianceSlug.replace('-repair', '');
   const appliance = appliances.find(a => a.slug === cleanSlug);
   if (!appliance) return {};
-  
-  return generatePageMetadata({ appliance: cleanSlug });
+
+  // Hand-written pages carry their own title and description; the allowlist rule is
+  // applied inside generatePageMetadata, so take that result and override the copy.
+  const deep = serviceContent[cleanSlug];
+  const base = generatePageMetadata({ appliance: cleanSlug });
+  if (!deep) return base;
+  return { ...base, title: deep.title, description: deep.description };
 }
 
 export default async function ApplianceRepairPage({ params }: PageProps) {
@@ -56,10 +63,11 @@ export default async function ApplianceRepairPage({ params }: PageProps) {
   const localBusinessSchema = generateLocalBusinessSchema({ appliance: cleanSlug });
   const serviceSchema = generateServiceSchema({ appliance: cleanSlug });
   const breadcrumbSchema = generateBreadcrumbSchema({ appliance: cleanSlug });
-  
-  return (
+
+  const deep = serviceContent[cleanSlug];
+
+  const schemaTags = (
     <>
-      {/* JSON-LD Schema */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
@@ -72,8 +80,30 @@ export default async function ApplianceRepairPage({ params }: PageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
-      
-      <Hero 
+      {deep && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(generateFAQSchema(deep.faqs)) }}
+        />
+      )}
+    </>
+  );
+
+  // Written pages replace the shared template entirely.
+  if (deep) {
+    return (
+      <>
+        {schemaTags}
+        <ServiceDeepPage content={deep} image={appliance.image} brandSlugs={deep.brandSlugs} />
+      </>
+    );
+  }
+
+  return (
+    <>
+      {schemaTags}
+
+      <Hero
         title={`Same-Day ${appliance.name} Repair in Denver Metro area`}
         subtitle="Expert repair service for all major brands • Same-day appointments available"
         applianceImage={appliance.image}
