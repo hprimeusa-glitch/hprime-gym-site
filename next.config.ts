@@ -8,6 +8,17 @@ const nextConfig: NextConfig = {
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
   },
 
+  // Consolidated service hubs, see hubRedirects in lib/data/appliances.ts
+  async redirects() {
+    return [
+      {
+        source: '/services/stationary-bike-repair',
+        destination: '/services/spin-bike-repair',
+        permanent: true,
+      },
+    ];
+  },
+
   // Headers for security and performance
   async headers() {
     return [

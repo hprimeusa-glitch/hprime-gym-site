@@ -251,13 +251,13 @@ export const serviceContent: Record<string, ServiceContent> = {
   'spin-bike': {
     slug: 'spin-bike',
     name: 'Spin bike',
-    title: 'Spin Bike & Exercise Bike Repair Denver | Resistance, Console',
+    title: 'Spin, Stationary & Exercise Bike Repair Denver',
     description:
       'Spin bike and stationary bike repair across the Denver Metro area: resistance faults, control board and console errors, noise from the flywheel, pedals and cleats. In-home service, $99 service call.',
-    h1: 'Spin Bike and Exercise Bike Repair in Denver',
+    h1: 'Spin, Stationary and Exercise Bike Repair in Denver',
     subtitle: 'Resistance faults, control boards and consoles, flywheel noise, pedals • In-home service • $99 service call',
     intro: [
-      'Indoor cycles break in a narrower set of ways than treadmills, and the split is clean: either the resistance has stopped behaving, or the console and its wiring have. H-Prime repairs Peloton, Schwinn, Bowflex, Echelon, NordicTrack, Keiser, Life Fitness and Precor bikes across the Denver Metro area, residential and in apartment and studio fitness rooms.',
+      'Indoor cycles break in a narrower set of ways than treadmills, and the split is clean: either the resistance has stopped behaving, or the console and its wiring have. H-Prime repairs Peloton, Schwinn, Bowflex, Echelon, NordicTrack, Keiser, Life Fitness and Precor bikes, spin bikes as well as upright and recumbent stationary bikes, across the Denver Metro area, residential and in apartment and studio fitness rooms.',
       'The used-bike market here is large, and a good share of these calls are on machines bought second-hand, where the warranty did not transfer with the bike. The service call is $99 and you get the diagnosis and the price before any work starts.',
     ],
     sections: [
@@ -336,8 +336,6 @@ export const serviceContent: Record<string, ServiceContent> = {
 
 /**
  * Deliberately NOT aliased onto /services/stationary-bike-repair. That hub serves the
- * same intent as spin-bike ("stationary bike repair", "exercise bike repair") and
- * copying this content onto it would create the exact near-duplicate pair this file
- * exists to remove. The two hubs need consolidating behind one canonical URL, which is
- * a redirect decision, not a content one.
+ * same intent as spin-bike ("stationary bike repair", "exercise bike repair"); since
+ * 2026-09-28 it 301s to /services/spin-bike-repair (next.config.ts, hubRedirects).
  */

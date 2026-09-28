@@ -6,7 +6,8 @@ import Hero from '@/components/Hero';
 import Reviews from '@/components/Reviews';
 import SEOContent from '@/components/SEOContent';
 import { brands } from '@/lib/data/brands';
-import { appliances } from '@/lib/data/appliances';
+import { appliances, hubRedirects } from '@/lib/data/appliances';
+import { serviceContent } from '@/lib/data/serviceContent';
 import { getAppliancesForBrand } from '@/lib/data/serviceBrands';
 import { getEquipmentImagesForBrand } from '@/lib/data/equipmentImages';
 import { generatePageMetadata } from '@/lib/seo/metadata';
@@ -51,6 +52,10 @@ export default async function BrandRepairPage({ params }: PageProps) {
   // Get appliances that this brand manufactures
   const relevantApplianceSlugs = getAppliancesForBrand(cleanSlug);
   const relevantAppliances = appliances.filter(a => relevantApplianceSlugs.includes(a.slug));
+  // Service hubs with written guides that cover this brand's equipment
+  const guideSlugs = Array.from(new Set(
+    relevantApplianceSlugs.map(slug => hubRedirects[slug] ?? slug)
+  )).filter(slug => slug in serviceContent);
   
   const localBusinessSchema = generateLocalBusinessSchema({ brand: cleanSlug });
   const serviceSchema = generateServiceSchema({ brand: cleanSlug });
@@ -105,6 +110,20 @@ export default async function BrandRepairPage({ params }: PageProps) {
               </Link>
             ))}
           </div>
+          {guideSlugs.length > 0 && (
+            <p className="text-center text-gray-700 mt-8 max-w-3xl mx-auto">
+              Symptoms, error codes and what to try before you call:{' '}
+              {guideSlugs.map((slug, i) => (
+                <span key={slug}>
+                  {i > 0 && (i === guideSlugs.length - 1 ? ' and ' : ', ')}
+                  <Link href={`/services/${slug}-repair`} className="font-semibold hover:underline" style={{ color: '#398ffc' }}>
+                    {serviceContent[slug].name.toLowerCase()} repair in Denver
+                  </Link>
+                </span>
+              ))}
+              .
+            </p>
+          )}
         </div>
       </section>
       

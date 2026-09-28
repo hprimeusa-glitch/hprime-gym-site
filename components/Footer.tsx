@@ -1,9 +1,9 @@
 import Link from 'next/link';
 import { PHONE_DISPLAY, PHONE_NUMBER, BUSINESS_EMAIL, BUSINESS_NAME, BUSINESS_ADDRESS } from '@/lib/utils';
-import { appliances } from '@/lib/data/appliances';
+import { hubAppliances } from '@/lib/data/appliances';
 
 export default function Footer() {
-  const majorAppliances = appliances.slice(0, 15);
+  const majorAppliances = hubAppliances.slice(0, 15);
 
   const serviceAreas = [
     { name: 'Denver County', slug: 'denver' },

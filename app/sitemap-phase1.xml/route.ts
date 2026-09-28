@@ -1,6 +1,6 @@
 import { MetadataRoute } from 'next';
 import { isIndexable } from '@/lib/data/indexAllowlist';
-import { appliances } from '@/lib/data/appliances';
+import { hubAppliances } from '@/lib/data/appliances';
 import { brands } from '@/lib/data/brands';
 import { publicCities as cities } from '@/lib/data/cities';
 
@@ -33,7 +33,7 @@ export async function GET() {
       priority: 0.95,
     },
     // All service pages (7 pages) - HIGH PRIORITY
-    ...appliances.map((appliance) => ({
+    ...hubAppliances.map((appliance) => ({
       url: `${baseUrl}/services/${appliance.slug}-repair`,
       lastModified: now,
       changeFrequency: 'weekly' as const,

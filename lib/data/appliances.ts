@@ -88,8 +88,8 @@ export const appliances = [
   {
     slug: 'spin-bike',
     name: 'Spin Bike',
-    title: 'Spin Bike Repair',
-    description: 'Peloton, Keiser, and indoor cycling bike repair services',
+    title: 'Spin & Exercise Bike Repair',
+    description: 'Spin, stationary and exercise bike repair: Peloton, Keiser, Schwinn, upright and recumbent bikes',
     image: '/equipment/keiser/stationary-bike.webp',
     services: [
       'Resistance knob not engaging',
@@ -200,6 +200,19 @@ export const appliances = [
     ]
   }
 ];
+
+/**
+ * Hubs consolidated into another hub by a 301 in next.config.ts. Their city and
+ * brand subpages stay live; only /services/{slug}-repair itself redirects, so it
+ * is left out of the hub links and the sitemap.
+ * stationary-bike -> spin-bike (2026-09-28): one intent, and Google had never
+ * crawled the stationary hub while spin-bike was indexed.
+ */
+export const hubRedirects: Record<string, string> = {
+  'stationary-bike': 'spin-bike',
+};
+
+export const hubAppliances = appliances.filter((a) => !(a.slug in hubRedirects));
 
 export const commercialAppliances = [
   {

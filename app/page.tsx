@@ -1,7 +1,7 @@
 import Hero from '@/components/Hero';
 import Reviews from '@/components/Reviews';
 import BrandsSection from '@/components/BrandsSection';
-import { appliances } from '@/lib/data/appliances';
+import { hubAppliances } from '@/lib/data/appliances';
 import { publicCities as cities } from '@/lib/data/cities';
 import { reviews } from '@/lib/data/reviews';
 import { CheckCircle, Clock, Users, Wrench } from 'lucide-react';
@@ -161,7 +161,7 @@ export default function HomePage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {appliances.map((appliance) => (
+            {hubAppliances.map((appliance) => (
               <Link
                 key={appliance.slug}
                 href={`/services/${appliance.slug}-repair`}
