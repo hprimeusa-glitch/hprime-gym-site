@@ -4,7 +4,7 @@ import { BUSINESS_NAME, PHONE_DISPLAY, PHONE_NUMBER } from '@/lib/utils';
 export const metadata = {
   title: 'Replacement Parts & Supplies | H-Prime Gym Equipment Repair',
   description:
-    'Genuine OEM and high-quality replacement parts for treadmills, ellipticals, bikes, rowers and strength equipment. Installed by certified H-Prime technicians in the Denver Metro area.',
+    'Genuine OEM and high-quality replacement parts for treadmills, ellipticals, bikes, rowers and strength equipment. Installed by H-Prime technicians in the Denver Metro area.',
   robots: 'noindex, nofollow',
   alternates: {
     canonical: 'https://www.hprime-gym.com/parts',

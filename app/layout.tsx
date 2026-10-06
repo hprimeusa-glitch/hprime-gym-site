@@ -23,11 +23,11 @@ const SITE_URL = 'https://www.hprime-gym.com';
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: 'H-Prime Gym Equipment Repair | Denver, CO | Same-Day Service',
-  description: 'Professional gym equipment repair in the Denver Metro area. Same-day service, certified technicians. Treadmills, ellipticals, stationary bikes, rowing machines & more. Call (720) 706-6650!',
+  description: 'Professional gym equipment repair in the Denver Metro area. Same-day service, experienced technicians. Treadmills, ellipticals, stationary bikes, rowing machines & more. Call (720) 706-6650!',
   keywords: 'gym equipment repair, Denver, Colorado, treadmill repair, elliptical repair, stationary bike repair, rowing machine repair, same-day service, H-Prime',
   openGraph: {
     title: 'H-Prime Gym Equipment Repair | Same-Day Service in Denver, CO',
-    description: 'Professional gym equipment repair in the Denver Metro area. Same-day service, certified technicians.',
+    description: 'Professional gym equipment repair in the Denver Metro area. Same-day service, experienced technicians.',
     url: SITE_URL,
     siteName: 'H-Prime Gym Equipment Repair',
     type: 'website',
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'H-Prime Gym Equipment Repair | Same-Day Service in Denver, CO',
-    description: 'Professional gym equipment repair in the Denver Metro area. Same-day service, certified technicians.',
+    description: 'Professional gym equipment repair in the Denver Metro area. Same-day service, experienced technicians.',
     images: [`${SITE_URL}/logo-og.png`],
   },
 };

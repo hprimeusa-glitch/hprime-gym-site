@@ -5,11 +5,13 @@
  * sitemaps were being declared as ordinary pages instead of as an index.
  * See Docs/Dev/guide-nextjs-sitemap-robots.md.
  */
+import { latestLastModified } from '@/lib/data/lastModified';
+
 const BASE_URL = 'https://www.hprime-gym.com';
 const PHASES = ['sitemap-phase1.xml', 'sitemap-phase2.xml', 'sitemap-phase3.xml'];
 
 export async function GET() {
-  const now = new Date().toISOString();
+  const now = latestLastModified(); // real dates: lib/data/lastModified.ts
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">

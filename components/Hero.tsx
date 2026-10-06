@@ -13,7 +13,7 @@ interface HeroProps {
   applianceImage?: string;
 }
 
-export default function Hero({ title, subtitle = 'Same-day service, certified technicians', brand, brandLogo, applianceImage }: HeroProps) {
+export default function Hero({ title, subtitle = 'Same-day service, experienced technicians', brand, brandLogo, applianceImage }: HeroProps) {
   const backgroundImage = applianceImage || "/equipment/peloton/stationary-bike.webp";
 
   return (
@@ -91,7 +91,7 @@ export default function Hero({ title, subtitle = 'Same-day service, certified te
                 </div>
                 <div className="bg-white/80 md:bg-white/10 backdrop-blur-sm p-2 md:p-2 rounded shadow-md md:shadow-none text-center md:text-left flex md:flex-row flex-col md:items-center md:gap-3">
                   <Award className="w-6 h-6 mx-auto md:mx-0 mb-1 md:mb-0" style={{ color: '#FFC704' }} />
-                  <div className="font-semibold text-xs md:text-base text-gray-900 md:text-white">Certified Techs</div>
+                  <div className="font-semibold text-xs md:text-base text-gray-900 md:text-white">Experienced Techs</div>
                 </div>
                 <div className="bg-white/80 md:bg-white/10 backdrop-blur-sm p-2 md:p-2 rounded shadow-md md:shadow-none text-center md:text-left flex md:flex-row flex-col md:items-center md:gap-3">
                   <Shield className="w-6 h-6 mx-auto md:mx-0 mb-1 md:mb-0" style={{ color: '#FFC704' }} />

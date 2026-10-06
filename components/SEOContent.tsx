@@ -33,7 +33,7 @@ function renderContent({ city, appliance, brand, county }: any) {
           <p className="text-base md:text-lg leading-relaxed">
             When your {brand} {appliance.toLowerCase()} breaks down in {city}, you need a repair service you can trust.
             <strong>H-Prime Gym Equipment Repair</strong> provides expert {brand} equipment repairs throughout {city} and surrounding areas
-            with professional care. Our certified technicians specialize in {brand} gym equipment and can diagnose and fix issues quickly.
+            with professional care. Our experienced technicians specialize in {brand} gym equipment and can diagnose and fix issues quickly.
           </p>
 
           <p className="text-base md:text-lg leading-relaxed">
@@ -55,7 +55,7 @@ function renderContent({ city, appliance, brand, county }: any) {
           <p className="text-base md:text-lg leading-relaxed">
             Is your {appliance.toLowerCase()} acting up in {city}? <strong>H-Prime Gym Equipment Repair</strong> provides expert {appliance.toLowerCase()}
             repair for all major brands throughout {city} and the surrounding Denver Metro area.
-            Our certified technicians can diagnose and repair your {appliance.toLowerCase()} quickly and efficiently.
+            Our experienced technicians can diagnose and repair your {appliance.toLowerCase()} quickly and efficiently.
           </p>
 
           <p className="text-base md:text-lg leading-relaxed">
@@ -81,7 +81,7 @@ function renderContent({ city, appliance, brand, county }: any) {
         <div className="text-gray-700 space-y-4">
           <p className="text-base md:text-lg leading-relaxed">
             Looking for reliable {brand} gym equipment repair in {city}? <strong>H-Prime Gym Equipment Repair</strong> specializes in {brand} equipment
-            and has been serving {city} residents with expert care. Our certified technicians are experts in diagnosing
+            and has been serving {city} residents with expert care. Our experienced technicians are experts in diagnosing
             and repairing all {brand} equipment models.
           </p>
 
@@ -108,7 +108,7 @@ function renderContent({ city, appliance, brand, county }: any) {
           <p className="text-base md:text-lg leading-relaxed">
             When your {brand} {appliance.toLowerCase()} needs repair, trust the experts at <strong>H-Prime Gym Equipment Repair</strong>.
             We provide professional {brand} {appliance.toLowerCase()} repair in Denver Metro with expert care.
-            Our certified technicians specialize in {brand} gym equipment and can quickly diagnose and fix any issue.
+            Our experienced technicians specialize in {brand} gym equipment and can quickly diagnose and fix any issue.
           </p>
 
           <p className="text-base md:text-lg leading-relaxed">
@@ -160,7 +160,7 @@ function renderContent({ city, appliance, brand, county }: any) {
         <div className="text-gray-700 space-y-4">
           <p className="text-base md:text-lg leading-relaxed">
             <strong>H-Prime Gym Equipment Repair</strong> is Denver Metro area's trusted source for {brand} gym equipment repair.
-            With certified technicians, we specialize in servicing all {brand} equipment models. From routine maintenance to
+            With experienced technicians, we specialize in servicing all {brand} equipment models. From routine maintenance to
             complex repairs, we're the {brand} experts you can count on throughout Denver and surrounding Colorado communities.
           </p>
 
@@ -186,7 +186,7 @@ function renderContent({ city, appliance, brand, county }: any) {
         <div className="text-gray-700 space-y-4">
           <p className="text-base md:text-lg leading-relaxed">
             When your {appliance.toLowerCase()} breaks down, you need fast, reliable repair service. <strong>H-Prime Gym Equipment Repair</strong> is
-            Denver Metro area's trusted {appliance.toLowerCase()} repair company. Our certified technicians service all
+            Denver Metro area's trusted {appliance.toLowerCase()} repair company. Our experienced technicians service all
             major brands and can diagnose and fix {appliance.toLowerCase()} issues quickly and efficiently.
           </p>
 

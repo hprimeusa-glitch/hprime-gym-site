@@ -60,12 +60,12 @@ export default async function ThankYouPage({
               <p className="text-2xl font-bold text-gray-900 mb-1">{date}</p>
               <p className="text-xl text-gray-700 mb-4">{time}</p>
               <p className="text-sm text-gray-500">
-                A certified technician will arrive within this time window.
+                A technician will arrive within this time window.
               </p>
             </div>
           ) : (
             <p className="text-lg text-gray-600 mb-6">
-              Your service request has been received. A certified technician will arrive at the scheduled time.
+              Your service request has been received. A technician will arrive at the scheduled time.
             </p>
           )}
 

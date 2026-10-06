@@ -37,8 +37,8 @@ export function LocalBusinessSchema({ name, city, county, service }: LocalBusine
     name: businessName,
     legalName: 'H-Prime Gym Equipment Repair LLC',
     description: service
-      ? `Professional ${service} service in ${areaServed}. Same-day appointments, certified technicians, all major brands.`
-      : `Professional gym equipment repair service in ${areaServed}. Same-day appointments, certified technicians, all major brands.`,
+      ? `Professional ${service} service in ${areaServed}. Same-day appointments, experienced technicians, all major brands.`
+      : `Professional gym equipment repair service in ${areaServed}. Same-day appointments, experienced technicians, all major brands.`,
     url: 'https://www.hprime-gym.com',
     logo: 'https://www.hprime-gym.com/logo.png',
     image: 'https://www.hprime-gym.com/og-image.jpg',

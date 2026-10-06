@@ -14,7 +14,7 @@ export interface ScenePhoto {
 const ALL_SCENE_PHOTOS: ScenePhoto[] = [
   // scene-01 excluded: too studio-lit
   { src: '/photos/scenes/scene-02.webp', alt: 'NordicTrack treadmill maintenance service', brand: 'nordictrack', equipmentType: 'treadmill' },
-  { src: '/photos/scenes/scene-03.webp', alt: 'Peloton Tread repair by certified technician', brand: 'peloton', equipmentType: 'treadmill' },
+  { src: '/photos/scenes/scene-03.webp', alt: 'Peloton Tread repair by H-Prime technician', brand: 'peloton', equipmentType: 'treadmill' },
   // scene-04 excluded: eyes closed
   { src: '/photos/scenes/scene-05.webp', alt: 'Life Fitness elliptical maintenance', brand: 'life-fitness', equipmentType: 'elliptical' },
   { src: '/photos/scenes/scene-06.webp', alt: 'NordicTrack elliptical repair', brand: 'nordictrack', equipmentType: 'elliptical' },

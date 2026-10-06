@@ -241,13 +241,13 @@ function generateBusinessDescription(params: SchemaParams): string {
   const { city, appliance, brand } = params;
 
   if (city && brand && appliance) {
-    return `Professional ${formatBrandName(brand)} ${formatEquipmentName(appliance)} repair in ${formatCityName(city)}, CO. Same-day service, certified technicians.`;
+    return `Professional ${formatBrandName(brand)} ${formatEquipmentName(appliance)} repair in ${formatCityName(city)}, CO. Same-day service, experienced technicians.`;
   } else if (city && appliance) {
     return `Expert ${formatEquipmentName(appliance)} repair in ${formatCityName(city)}, CO. Same-day service available.`;
   } else if (city) {
     return `Professional gym equipment repair services in ${formatCityName(city)}, CO. All major brands and equipment types. Same-day service.`;
   } else {
-    return `Expert gym equipment repair in the Denver Metro area. Certified technicians, same-day service for treadmills, ellipticals, bikes & more.`;
+    return `Expert gym equipment repair in the Denver Metro area. Experienced technicians, same-day service for treadmills, ellipticals, bikes & more.`;
   }
 }
 
@@ -269,11 +269,11 @@ function generateServiceDescription(params: SchemaParams): string {
   const { city, appliance, brand } = params;
 
   if (city && brand && appliance) {
-    return `Professional ${formatBrandName(brand)} ${formatEquipmentName(appliance)} repair services in ${formatCityName(city)}, CO. Certified technicians, same-day service, upfront pricing.`;
+    return `Professional ${formatBrandName(brand)} ${formatEquipmentName(appliance)} repair services in ${formatCityName(city)}, CO. Experienced technicians, same-day service, upfront pricing.`;
   } else if (city && appliance) {
-    return `Expert ${formatEquipmentName(appliance)} repair in ${formatCityName(city)}, CO. Certified technicians, same-day service, all major brands.`;
+    return `Expert ${formatEquipmentName(appliance)} repair in ${formatCityName(city)}, CO. Experienced technicians, same-day service, all major brands.`;
   } else if (brand && appliance) {
-    return `Professional ${formatBrandName(brand)} ${formatEquipmentName(appliance)} repair in the Denver Metro area. Certified technicians.`;
+    return `Professional ${formatBrandName(brand)} ${formatEquipmentName(appliance)} repair in the Denver Metro area. Experienced technicians.`;
   } else {
     return `Professional gym equipment repair services in the Denver Metro area. All major brands and equipment types. Same-day service available.`;
   }

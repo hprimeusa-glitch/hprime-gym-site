@@ -20,7 +20,7 @@ export default function BrandsSection() {
             Brands We Service
           </h2>
           <p className="text-xl text-gray-600">
-            Our certified technicians are trained to repair gym equipment from all major brands
+            Our experienced technicians are trained to repair gym equipment from all major brands
           </p>
         </div>
 

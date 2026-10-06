@@ -27,7 +27,7 @@ const homepageFaqs = [
   { q: 'Can you repair commercial gym equipment?', a: 'Yes, we service both residential and commercial gym equipment including treadmills, ellipticals, stationary bikes, rowing machines, weight machines, and more.' },
   { q: 'How long does a treadmill typically last?', a: 'A quality treadmill lasts 7–12 years with proper maintenance. Regular belt lubrication, cleaning, and timely repairs can significantly extend its lifespan.' },
   { q: 'Do you service all gym equipment brands?', a: 'Yes, we repair all major brands including Life Fitness, Precor, Peloton, NordicTrack, Bowflex, Cybex, Technogym, and many more.' },
-  { q: 'Are your technicians certified?', a: 'Yes. Our technicians work on all major gym equipment brands and keep up with new models as they come out.' },
+  { q: 'Do your technicians know my equipment brand?', a: 'Yes. Our technicians work on all major gym equipment brands and keep up with new models as they come out.' },
 ];
 
 export default function HomePage() {

@@ -23,22 +23,22 @@ export function generatePageMetadata(params: SEOParams): Metadata {
     const brandName = formatBrandName(brand);
     const equipmentName = formatEquipmentName(appliance);
     title = `Expert ${brandName} ${equipmentName} Repair in ${cityName}, CO | Same-Day Service`;
-    description = `Professional ${brandName} ${equipmentName} repair in ${cityName}, CO. Certified technicians, same-day service, upfront pricing. Call ${PHONE} for ${brandName} gym equipment repairs!`;
+    description = `Professional ${brandName} ${equipmentName} repair in ${cityName}, CO. Experienced technicians, same-day service, upfront pricing. Call ${PHONE} for ${brandName} gym equipment repairs!`;
   } else if (city && brand) {
     const cityName = formatCityName(city);
     const brandName = formatBrandName(brand);
     title = `${brandName} Gym Equipment Repair in ${cityName}, CO | Expert ${brandName} Service`;
-    description = `Trusted ${brandName} gym equipment repair in ${cityName}, CO. Certified technicians for all ${brandName} equipment. Same-day service available. Call ${PHONE} now!`;
+    description = `Trusted ${brandName} gym equipment repair in ${cityName}, CO. Experienced technicians for all ${brandName} equipment. Same-day service available. Call ${PHONE} now!`;
   } else if (city && appliance) {
     const cityName = formatCityName(city);
     const equipmentName = formatEquipmentName(appliance);
     title = `${cityName} ${equipmentName} Repair | Same-Day Service | ${SITE_NAME}`;
-    description = `Expert ${equipmentName} repair in ${cityName}, CO. Same-day service, certified technicians, upfront pricing. Call ${PHONE} for professional ${equipmentName} repair!`;
+    description = `Expert ${equipmentName} repair in ${cityName}, CO. Same-day service, experienced technicians, upfront pricing. Call ${PHONE} for professional ${equipmentName} repair!`;
   } else if (brand && appliance) {
     const brandName = formatBrandName(brand);
     const equipmentName = formatEquipmentName(appliance);
     title = `${brandName} ${equipmentName} Repair Denver Metro | Expert ${brandName} Service`;
-    description = `Professional ${brandName} ${equipmentName} repair in the Denver Metro area. Certified technicians, same-day service. Call ${PHONE}!`;
+    description = `Professional ${brandName} ${equipmentName} repair in the Denver Metro area. Experienced technicians, same-day service. Call ${PHONE}!`;
   } else if (city) {
     const cityName = formatCityName(city);
     title = `Gym Equipment Repair ${cityName}, CO | Same-Day Service | ${SITE_NAME}`;
@@ -46,14 +46,14 @@ export function generatePageMetadata(params: SEOParams): Metadata {
   } else if (brand) {
     const brandName = formatBrandName(brand);
     title = `${brandName} Gym Equipment Repair Denver Metro | ${SITE_NAME}`;
-    description = `Expert ${brandName} gym equipment repair across the Denver Metro area. Certified technicians, all major ${brandName} equipment. Same-day service. Call ${PHONE}!`;
+    description = `Expert ${brandName} gym equipment repair across the Denver Metro area. Experienced technicians, all major ${brandName} equipment. Same-day service. Call ${PHONE}!`;
   } else if (appliance) {
     const equipmentName = formatEquipmentName(appliance);
     title = `${equipmentName} Repair Denver Metro | Same-Day Service | ${SITE_NAME}`;
-    description = `Expert ${equipmentName} repair in the Denver Metro area. Certified technicians, same-day service, all major brands. Call ${PHONE} for professional ${equipmentName} repair!`;
+    description = `Expert ${equipmentName} repair in the Denver Metro area. Experienced technicians, same-day service, all major brands. Call ${PHONE} for professional ${equipmentName} repair!`;
   } else {
     title = `${SITE_NAME} | Expert Gym Equipment Repair in Denver, CO`;
-    description = `Professional gym equipment repair in the Denver Metro area. Same-day service, certified technicians. Treadmills, ellipticals, bikes, rowing machines & more. Call ${PHONE}!`;
+    description = `Professional gym equipment repair in the Denver Metro area. Same-day service, experienced technicians. Treadmills, ellipticals, bikes, rowing machines & more. Call ${PHONE}!`;
   }
 
   const fullTitle = title.includes(SITE_NAME) ? title : `${title} | ${SITE_NAME}`;

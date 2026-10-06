@@ -1,5 +1,6 @@
 import { MetadataRoute } from 'next';
 import { isIndexable } from '@/lib/data/indexAllowlist';
+import { TEMPLATE_LAST_MODIFIED, lastModifiedFor } from '@/lib/data/lastModified';
 import { appliances } from '@/lib/data/appliances';
 import { brands } from '@/lib/data/brands';
 import { checkBrandApplianceMatch } from '@/lib/data/serviceBrands';
@@ -11,7 +12,7 @@ import { checkBrandApplianceMatch } from '@/lib/data/serviceBrands';
  */
 export async function GET() {
   const baseUrl = 'https://www.hprime-gym.com';
-  const now = new Date().toISOString();
+  const now = TEMPLATE_LAST_MODIFIED; // real dates: lib/data/lastModified.ts
 
   const routes: MetadataRoute.Sitemap = brands.flatMap((brand) =>
     appliances
@@ -37,7 +38,7 @@ ${indexable
   .map(
     (route) => `  <url>
     <loc>${route.url}</loc>
-    <lastmod>${route.lastModified}</lastmod>
+    <lastmod>${lastModifiedFor(new URL(route.url as string).pathname)}</lastmod>
     <changefreq>${route.changeFrequency}</changefreq>
     <priority>${route.priority}</priority>
   </url>`
