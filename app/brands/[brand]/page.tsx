@@ -5,13 +5,15 @@ import { Clock, Shield, Wrench, Users } from 'lucide-react';
 import Hero from '@/components/Hero';
 import Reviews from '@/components/Reviews';
 import SEOContent from '@/components/SEOContent';
+import BrandDeepPage from '@/components/BrandDeepPage';
 import { brands } from '@/lib/data/brands';
 import { appliances, hubRedirects } from '@/lib/data/appliances';
 import { serviceContent } from '@/lib/data/serviceContent';
 import { getAppliancesForBrand } from '@/lib/data/serviceBrands';
 import { getEquipmentImagesForBrand } from '@/lib/data/equipmentImages';
 import { generatePageMetadata } from '@/lib/seo/metadata';
-import { generateLocalBusinessSchema, generateServiceSchema, generateBreadcrumbSchema } from '@/lib/seo/schema';
+import { generateLocalBusinessSchema, generateServiceSchema, generateBreadcrumbSchema, generateFAQSchema } from '@/lib/seo/schema';
+import { getBrandContent } from '@/lib/data/brandContent';
 
 interface PageProps {
   params: Promise<{
@@ -35,8 +37,20 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const cleanSlug = brandSlug.replace('-repair', '');
   const brand = brands.find(b => b.slug === cleanSlug);
   if (!brand) return {};
-  
-  return generatePageMetadata({ brand: cleanSlug });
+
+  const base = generatePageMetadata({ brand: cleanSlug });
+  const deep = getBrandContent(cleanSlug);
+  if (!deep) return base;
+
+  // Hand-written pages carry their own title and description, written against the
+  // queries the page actually receives; canonical, robots and images stay as built.
+  return {
+    ...base,
+    title: deep.title,
+    description: deep.description,
+    openGraph: { ...(base.openGraph ?? {}), title: deep.title, description: deep.description },
+    twitter: { ...(base.twitter ?? {}), title: deep.title, description: deep.description },
+  };
 }
 
 export default async function BrandRepairPage({ params }: PageProps) {
@@ -60,6 +74,20 @@ export default async function BrandRepairPage({ params }: PageProps) {
   const localBusinessSchema = generateLocalBusinessSchema({ brand: cleanSlug });
   const serviceSchema = generateServiceSchema({ brand: cleanSlug });
   const breadcrumbSchema = generateBreadcrumbSchema({ brand: cleanSlug });
+
+  const deep = getBrandContent(cleanSlug);
+  if (deep) {
+    const faqSchema = generateFAQSchema(deep.faqs);
+    return (
+      <>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+        <BrandDeepPage content={deep} brand={brand} guideSlugs={guideSlugs} />
+      </>
+    );
+  }
 
   // Get first available equipment image for this brand
   const brandEquipmentImages = getEquipmentImagesForBrand(cleanSlug);
