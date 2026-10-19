@@ -15,6 +15,7 @@ const PAGE_LAST_MODIFIED: Record<string, string> = {
   '/services/elliptical-repair': '2026-09-23',
   '/services/spin-bike-repair': '2026-09-28',
   '/brands/nordictrack-repair': '2026-10-12',
+  '/commercial': '2026-10-19',
 };
 
 /** Date for one pathname: the page's own rewrite date if it is newer than the template. */
