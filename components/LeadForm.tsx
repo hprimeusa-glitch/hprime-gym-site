@@ -1,11 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { PatternFormat } from 'react-number-format';
+import { BusinessNow, TIME_SLOT_DEFS, businessNow, firstBookableDate, isSlotOpen, isSundayISO } from '@/lib/booking';
 
 // Temporary holiday closure — Independence Day weekend 2026 (Fri Jul 3 – Sun Jul 5).
 // Self-expiring: once these dates are in the past, `min={today}` on the date input already
@@ -13,14 +14,8 @@ import { PatternFormat } from 'react-number-format';
 const BLOCKED_DATES = ['2026-07-03', '2026-07-04', '2026-07-05'];
 
 // Gym is closed on Sundays (open Mon–Sat). A native <input type="date"> can't grey out
-// weekdays, so we reject Sundays in validation and show a hint. Parse the Y-M-D parts and
-// build a LOCAL date so the weekday check is timezone-safe (no UTC off-by-one).
-const isSunday = (val: string): boolean => {
-  const [y, m, d] = val.split('-').map(Number);
-  if (!y || !m || !d) return false;
-  return new Date(y, m - 1, d).getDay() === 0; // 0 = Sunday
-};
-
+// weekdays, so we reject Sundays in validation and show a hint. Dates are judged in the
+// shop's timezone (lib/booking), not the browser's.
 const formSchema = z.object({
   firstName: z.string().min(2, 'First name must be at least 2 characters'),
   lastName: z.string().min(2, 'Last name must be at least 2 characters'),
@@ -40,21 +35,28 @@ const formSchema = z.object({
     .refine((val) => !BLOCKED_DATES.includes(val), {
       message: 'We are closed Jul 3–5 for the holiday. Please choose another date.',
     })
-    .refine((val) => !isSunday(val), {
+    .refine((val) => !isSundayISO(val), {
       message: "We're closed on Sundays — please choose Monday through Saturday.",
+    })
+    .refine((val) => val >= businessNow().date, {
+      message: 'Please choose today or a later date.',
     }),
   preferredTimeSlot: z.string().min(1, 'Please select a time slot'),
+}).superRefine((data, ctx) => {
+  // Checked against the clock at submit time, so a tab left open since the morning
+  // can't send a window that has already started.
+  if (data.preferredDate && data.preferredTimeSlot && !isSlotOpen(data.preferredDate, data.preferredTimeSlot)) {
+    ctx.addIssue({
+      code: 'custom',
+      path: ['preferredTimeSlot'],
+      message: 'This window has already started — please pick a later one.',
+    });
+  }
 });
 
 type FormData = z.infer<typeof formSchema>;
 
 const STEP_1_FIELDS: Array<keyof FormData> = ['firstName', 'lastName', 'phone', 'email', 'message'];
-
-const todayLocalISO = (): string => {
-  const now = new Date();
-  const offsetMs = now.getTimezoneOffset() * 60_000;
-  return new Date(now.getTime() - offsetMs).toISOString().slice(0, 10);
-};
 
 interface LeadFormProps {
   variant?: 'section' | 'modal';
@@ -65,7 +67,10 @@ export default function LeadForm({ variant = 'section', onSuccess }: LeadFormPro
   const router = useRouter();
   const [step, setStep] = useState<1 | 2>(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error' | 'slot_closed'>('idle');
+  // Shop-time clock, set after mount (no hydration mismatch) and refreshed every minute
+  // and whenever the tab comes back into focus.
+  const [now, setNow] = useState<BusinessNow | null>(null);
 
   const {
     register,
@@ -74,10 +79,49 @@ export default function LeadForm({ variant = 'section', onSuccess }: LeadFormPro
     reset,
     control,
     trigger,
+    watch,
+    getValues,
+    setValue,
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
     mode: 'onTouched',
   });
+
+  useEffect(() => {
+    const tick = () => setNow(businessNow());
+    tick();
+    const id = window.setInterval(tick, 60_000);
+    const onVisible = () => {
+      if (document.visibilityState === 'visible') tick();
+    };
+    window.addEventListener('focus', tick);
+    document.addEventListener('visibilitychange', onVisible);
+    return () => {
+      window.clearInterval(id);
+      window.removeEventListener('focus', tick);
+      document.removeEventListener('visibilitychange', onVisible);
+    };
+  }, []);
+
+  const selectedDate = watch('preferredDate');
+  const minDate = now ? firstBookableDate(now) : undefined;
+  const slotOpen = (label: string) => !now || !selectedDate || isSlotOpen(selectedDate, label, now);
+
+  // A window that closed while the form sat open is dropped from the selection, and the
+  // customer is told to pick another one.
+  useEffect(() => {
+    if (!now) return;
+    const { preferredDate: date, preferredTimeSlot: slot } = getValues();
+    if (date && slot && !isSlotOpen(date, slot, now)) {
+      setValue('preferredTimeSlot', '', { shouldValidate: false });
+      setSubmitStatus('slot_closed');
+    }
+  }, [now, selectedDate, getValues, setValue]);
+
+  const selectedSlot = watch('preferredTimeSlot');
+  useEffect(() => {
+    if (selectedSlot) setSubmitStatus((s) => (s === 'slot_closed' ? 'idle' : s));
+  }, [selectedSlot]);
 
   const goToStep2 = async () => {
     const valid = await trigger(STEP_1_FIELDS);
@@ -149,6 +193,10 @@ export default function LeadForm({ variant = 'section', onSuccess }: LeadFormPro
           time: data.preferredTimeSlot,
         });
         router.push(`/thank-you-page?${tyParams.toString()}`);
+      } else if (response.status === 409) {
+        setValue('preferredTimeSlot', '', { shouldValidate: false });
+        setSubmitStatus('slot_closed');
+        setNow(businessNow());
       } else {
         setSubmitStatus('error');
       }
@@ -291,11 +339,11 @@ export default function LeadForm({ variant = 'section', onSuccess }: LeadFormPro
             {...register('preferredDate')}
             type="date"
             id="preferredDate"
-            min={todayLocalISO()}
+            min={minDate}
             className={inputCls}
           />
           <p className="text-gray-500 text-xs mt-0.5">Closed Sundays.</p>
-          {BLOCKED_DATES.some((d) => d >= todayLocalISO()) && (
+          {now && BLOCKED_DATES.some((d) => d >= now.date) && (
             <p className="text-amber-600 text-xs mt-0.5">Closed Jul 3–5 for the holiday — please pick another date.</p>
           )}
           {errors.preferredDate && <p className={errorCls}>{errors.preferredDate.message}</p>}
@@ -309,10 +357,14 @@ export default function LeadForm({ variant = 'section', onSuccess }: LeadFormPro
             defaultValue=""
           >
             <option value="" disabled>Select…</option>
-            <option value="7 AM – 10 AM">7 AM – 10 AM</option>
-            <option value="10 AM – 1 PM">10 AM – 1 PM</option>
-            <option value="1 PM – 4 PM">1 PM – 4 PM</option>
-            <option value="4 PM – 7 PM">4 PM – 7 PM</option>
+            {TIME_SLOT_DEFS.map(({ label }) => {
+              const open = slotOpen(label);
+              return (
+                <option key={label} value={label} disabled={!open}>
+                  {label}{open ? '' : ' — too late today'}
+                </option>
+              );
+            })}
           </select>
           {errors.preferredTimeSlot && <p className={errorCls}>{errors.preferredTimeSlot.message}</p>}
         </div>
@@ -339,6 +391,13 @@ export default function LeadForm({ variant = 'section', onSuccess }: LeadFormPro
       {submitStatus === 'error' && (
         <div className="bg-red-100 border border-red-400 text-red-700 px-3 py-2 rounded text-sm">
           Something went wrong. Please try again or call us directly.
+        </div>
+      )}
+
+      {submitStatus === 'slot_closed' && (
+        <div className="bg-amber-100 border border-amber-400 text-amber-800 px-3 py-2 rounded text-sm">
+          That window has already started. Please pick a later one — or call us and we will find the
+          fastest slot.
         </div>
       )}
     </div>

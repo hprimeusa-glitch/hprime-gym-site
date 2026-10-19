@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { TIME_SLOTS, isSlotOpen, isValidDateISO } from '@/lib/booking';
 
 interface LeadData {
   name: string;
@@ -32,6 +33,14 @@ export async function POST(request: NextRequest) {
         { error: 'Missing required fields' },
         { status: 400 }
       );
+    }
+
+    // A window that is already running (or a Sunday / past date) is refused here too —
+    // the browser can sit on the form long enough for its own check to go stale.
+    const bookingDate = data.preferredDate || '';
+    const bookingSlot = data.preferredTimeSlot || '';
+    if (isValidDateISO(bookingDate) && TIME_SLOTS.includes(bookingSlot) && !isSlotOpen(bookingDate, bookingSlot)) {
+      return NextResponse.json({ error: 'slot_closed', reason: 'closed' }, { status: 409 });
     }
 
     const botToken = process.env.TELEGRAM_BOT_TOKEN;
