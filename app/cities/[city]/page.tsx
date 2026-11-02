@@ -198,7 +198,7 @@ export default async function CityPage({ params }: PageProps) {
               {nearbyCities.map((nearbyCity) => (
                 <Link
                   key={nearbyCity.slug}
-                  href={`/${nearbyCity.slug}`}
+                  href={`/cities/${nearbyCity.slug}`}
                   className="text-center p-4 bg-white rounded-lg hover:shadow-md transition"
                 >
                   <span className="text-gray-900 font-medium">{nearbyCity.name}</span>
