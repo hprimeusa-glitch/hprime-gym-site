@@ -70,6 +70,32 @@ export const addDaysISO = (dateISO: string, days: number): string => {
   return new Date(Date.UTC(y, m - 1, d + days)).toISOString().slice(0, 10);
 };
 
+export interface ClosedRange {
+  /** first closed day, YYYY-MM-DD in BUSINESS_TZ */
+  from: string;
+  /** last closed day, inclusive */
+  to: string;
+  /** shown to the customer, e.g. "Nov 30 – Dec 4" */
+  label: string;
+}
+
+/**
+ * Days with no online booking (time off, holidays). Phone calls still work.
+ * To close days add a range; to reopen remove it. Past ranges are harmless.
+ */
+export const CLOSED_DATE_RANGES: readonly ClosedRange[] = [
+  { from: '2026-07-03', to: '2026-07-05', label: 'Jul 3–5' },
+  // Taras 2026-11-06: online booking closed Mon Nov 30 – Fri Dec 4.
+  { from: '2026-11-30', to: '2026-12-04', label: 'Nov 30 – Dec 4' },
+];
+
+export const closedRangeFor = (dateISO: string): ClosedRange | null =>
+  CLOSED_DATE_RANGES.find((range) => dateISO >= range.from && dateISO <= range.to) ?? null;
+
+/** Closures that still matter today, for the hint under the date field. */
+export const upcomingClosures = (today: string): ClosedRange[] =>
+  CLOSED_DATE_RANGES.filter((range) => range.to >= today);
+
 /** Can this window still be booked on this date? */
 export function isSlotOpen(
   dateISO: string,
@@ -79,6 +105,7 @@ export function isSlotOpen(
   const slot = TIME_SLOT_DEFS.find((def) => def.label === slotLabel);
   if (!slot) return false;
   if (!isValidDateISO(dateISO) || isSundayISO(dateISO)) return false;
+  if (closedRangeFor(dateISO)) return false;
   if (dateISO < now.date) return false;
   if (dateISO > now.date) return true;
   return slot.startMinutes - MIN_LEAD_MINUTES >= now.minutes;
@@ -93,7 +120,7 @@ export const hasOpenSlots = (dateISO: string, now: BusinessNow = businessNow()):
  */
 export function firstBookableDate(now: BusinessNow = businessNow()): string {
   let date = now.date;
-  for (let i = 0; i < 14; i += 1) {
+  for (let i = 0; i < 30; i += 1) {
     if (hasOpenSlots(date, now)) return date;
     date = addDaysISO(date, 1);
   }

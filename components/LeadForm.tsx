@@ -6,12 +6,9 @@ import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { PatternFormat } from 'react-number-format';
-import { BusinessNow, TIME_SLOT_DEFS, businessNow, firstBookableDate, isSlotOpen, isSundayISO } from '@/lib/booking';
+import { BusinessNow, TIME_SLOT_DEFS, businessNow, closedRangeFor, firstBookableDate, isSlotOpen, isSundayISO, upcomingClosures } from '@/lib/booking';
 
-// Temporary holiday closure — Independence Day weekend 2026 (Fri Jul 3 – Sun Jul 5).
-// Self-expiring: once these dates are in the past, `min={today}` on the date input already
-// prevents selecting them, so the refine below becomes a no-op. Safe to leave; remove anytime.
-const BLOCKED_DATES = ['2026-07-03', '2026-07-04', '2026-07-05'];
+// Closed days (time off, holidays) live in lib/booking CLOSED_DATE_RANGES.
 
 // Gym is closed on Sundays (open Mon–Sat). A native <input type="date"> can't grey out
 // weekdays, so we reject Sundays in validation and show a hint. Dates are judged in the
@@ -32,9 +29,6 @@ const formSchema = z.object({
   preferredDate: z
     .string()
     .min(1, 'Please select a preferred date')
-    .refine((val) => !BLOCKED_DATES.includes(val), {
-      message: 'We are closed Jul 3–5 for the holiday. Please choose another date.',
-    })
     .refine((val) => !isSundayISO(val), {
       message: "We're closed on Sundays — please choose Monday through Saturday.",
     })
@@ -45,6 +39,15 @@ const formSchema = z.object({
 }).superRefine((data, ctx) => {
   // Checked against the clock at submit time, so a tab left open since the morning
   // can't send a window that has already started.
+  const closed = data.preferredDate ? closedRangeFor(data.preferredDate) : null;
+  if (closed) {
+    ctx.addIssue({
+      code: 'custom',
+      path: ['preferredDate'],
+      message: `Online booking is closed ${closed.label}. Please choose another date or call us.`,
+    });
+    return;
+  }
   if (data.preferredDate && data.preferredTimeSlot && !isSlotOpen(data.preferredDate, data.preferredTimeSlot)) {
     ctx.addIssue({
       code: 'custom',
@@ -114,7 +117,8 @@ export default function LeadForm({ variant = 'section', onSuccess }: LeadFormPro
     const { preferredDate: date, preferredTimeSlot: slot } = getValues();
     if (date && slot && !isSlotOpen(date, slot, now)) {
       setValue('preferredTimeSlot', '', { shouldValidate: false });
-      setSubmitStatus('slot_closed');
+      // A closed day has its own hint under the slot list; "already started" would mislead.
+      if (!closedRangeFor(date)) setSubmitStatus('slot_closed');
     }
   }, [now, selectedDate, getValues, setValue]);
 
@@ -343,9 +347,10 @@ export default function LeadForm({ variant = 'section', onSuccess }: LeadFormPro
             className={inputCls}
           />
           <p className="text-gray-500 text-xs mt-0.5">Closed Sundays.</p>
-          {now && BLOCKED_DATES.some((d) => d >= now.date) && (
-            <p className="text-amber-600 text-xs mt-0.5">Closed Jul 3–5 for the holiday — please pick another date.</p>
-          )}
+          {now &&
+            upcomingClosures(now.date).map(({ label }) => (
+              <p key={label} className="text-amber-600 text-xs mt-0.5">No online booking {label}.</p>
+            ))}
           {errors.preferredDate && <p className={errorCls}>{errors.preferredDate.message}</p>}
         </div>
         <div>
@@ -359,14 +364,20 @@ export default function LeadForm({ variant = 'section', onSuccess }: LeadFormPro
             <option value="" disabled>Select…</option>
             {TIME_SLOT_DEFS.map(({ label }) => {
               const open = slotOpen(label);
+              const suffix = open ? '' : selectedDate && closedRangeFor(selectedDate) ? ' — closed' : ' — too late today';
               return (
                 <option key={label} value={label} disabled={!open}>
-                  {label}{open ? '' : ' — too late today'}
+                  {label}{suffix}
                 </option>
               );
             })}
           </select>
           {errors.preferredTimeSlot && <p className={errorCls}>{errors.preferredTimeSlot.message}</p>}
+          {selectedDate && closedRangeFor(selectedDate) && (
+            <p className="text-amber-600 text-xs mt-0.5">
+              Online booking is closed {closedRangeFor(selectedDate)?.label} — pick another day, or call us.
+            </p>
+          )}
         </div>
       </div>
 
