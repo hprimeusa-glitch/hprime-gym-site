@@ -6,12 +6,20 @@
  * See Docs/Dev/guide-nextjs-sitemap-robots.md.
  */
 import { latestLastModified } from '@/lib/data/lastModified';
+import { getAllPosts } from '@/lib/keystatic';
+import { blogIndexLastModified } from '@/lib/blog';
 
 const BASE_URL = 'https://www.hprime-gym.com';
 const PHASES = ['sitemap-phase1.xml', 'sitemap-phase2.xml', 'sitemap-phase3.xml'];
 
+// Built once at deploy time (blog dates are read from content/posts at build time).
+export const dynamic = 'force-static';
+
 export async function GET() {
-  const now = latestLastModified(); // real dates: lib/data/lastModified.ts
+  // Real dates: lib/data/lastModified.ts for pages, frontmatter for blog posts.
+  const pages = latestLastModified();
+  const blog = blogIndexLastModified(await getAllPosts());
+  const now = blog > pages ? blog : pages;
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">

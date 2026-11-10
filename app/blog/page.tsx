@@ -1,32 +1,41 @@
+import type { Metadata } from 'next';
 import { getAllPosts } from '@/lib/keystatic';
+import { BLOG_URL, SITE_NAME, SITE_URL, isBlogIndexIndexable, postHeadline, robotsFor } from '@/lib/blog';
 import { FileText, Calendar, User } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 
-export const metadata = {
-  title: 'Gym Equipment Repair Tips & Blog | H-Prime Gym Equipment Repair Services',
-  description: 'Expert tips, guides, and advice for gym equipment repair and maintenance. Learn how to keep your gym equipment running smoothly.',
-  alternates: {
-    canonical: 'https://www.hprime-gym.com/blog',
+const TITLE = 'Gym Equipment Repair Tips & Blog | H-Prime Gym Equipment Repair Services';
+const DESCRIPTION =
+  'Expert tips, guides, and advice for gym equipment repair and maintenance. Learn how to keep your gym equipment running smoothly.';
+
+export const metadata: Metadata = {
+  title: TITLE,
+  description: DESCRIPTION,
+  alternates: { canonical: BLOG_URL },
+  openGraph: {
+    title: TITLE,
+    description: DESCRIPTION,
+    url: BLOG_URL,
+    type: 'website',
+    locale: 'en_US',
+    siteName: SITE_NAME,
+    images: [{ url: `${SITE_URL}/logo-og.png`, alt: SITE_NAME }],
   },
+  twitter: {
+    card: 'summary_large_image',
+    title: TITLE,
+    description: DESCRIPTION,
+    images: [`${SITE_URL}/logo-og.png`],
+  },
+  // /blog is a core route in the index allowlist (scripts/seo-content-pipeline/index_allowlist.py).
+  robots: robotsFor(isBlogIndexIndexable()),
 };
 
-// Force dynamic rendering (disable caching)
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
-
+// Statically generated: posts are read from content/posts at build time, so a new
+// post ships with the deploy that adds its file.
 export default async function BlogPage() {
-  console.log('[BlogPage] Fetching posts...');
   const posts = await getAllPosts();
-  console.log('[BlogPage] Received posts:', posts.length);
-  
-  if (posts.length > 0) {
-    posts.forEach(p => {
-      console.log('[BlogPage] Post:', p.slug, '| Title:', p.entry.title);
-    });
-  } else {
-    console.log('[BlogPage] NO POSTS RECEIVED!');
-  }
 
   return (
     <>
@@ -62,13 +71,8 @@ export default async function BlogPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
               {posts.map((post) => {
                 const { slug } = post;
-                const { displayTitle, title, description, publishedDate, author, image } = post.entry;
-                
-                // Use displayTitle if available, or convert slug to readable title
-                const articleTitle = displayTitle || title
-                  .split('-')
-                  .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-                  .join(' ');
+                const { description, publishedDate, author, image } = post.entry;
+                const articleTitle = postHeadline(post.entry);
                 
                 return (
                   <Link
@@ -100,11 +104,14 @@ export default async function BlogPage() {
                         {publishedDate && (
                           <span className="flex items-center gap-1">
                             <Calendar className="w-4 h-4" />
-                            {new Date(publishedDate).toLocaleDateString('en-US', {
-                              year: 'numeric',
-                              month: 'short',
-                              day: 'numeric',
-                            })}
+                            <time dateTime={publishedDate}>
+                              {new Date(`${publishedDate}T00:00:00Z`).toLocaleDateString('en-US', {
+                                year: 'numeric',
+                                month: 'short',
+                                day: 'numeric',
+                                timeZone: 'UTC',
+                              })}
+                            </time>
                           </span>
                         )}
                         {author && (

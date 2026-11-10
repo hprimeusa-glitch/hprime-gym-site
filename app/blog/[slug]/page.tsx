@@ -1,31 +1,70 @@
+import type { Metadata } from 'next';
 import { getAllPosts, getPostBySlug } from '@/lib/keystatic';
+import {
+  SITE_NAME,
+  articleSchema,
+  isPostIndexable,
+  postHeadline,
+  postImageUrl,
+  postLastModified,
+  postUrl,
+  robotsFor,
+} from '@/lib/blog';
 import { Calendar, User, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { MarkdocRenderer } from '@/components/MarkdocRenderer';
 
-// Force dynamic rendering (disable caching)
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+type PageProps = { params: Promise<{ slug: string }> };
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+// Every post is generated at build time from content/posts/*.mdoc; an unknown slug
+// is a 404 instead of a runtime file read (Vercel functions do not ship content/).
+export const dynamicParams = false;
+
+export async function generateStaticParams() {
+  const posts = await getAllPosts();
+  return posts.map((post) => ({ slug: post.slug }));
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const post = await getPostBySlug(slug);
-  
-  if (!post) {
-    return {
-      title: 'Post Not Found',
-    };
-  }
+  if (!post) return { title: 'Post Not Found', robots: { index: false, follow: true } };
+
+  const title = postHeadline(post);
+  const description = post.description;
+  const url = postUrl(slug);
+  const image = postImageUrl(post.image);
+  const modified = postLastModified(post);
 
   return {
-    title: `${post.title} | H-Prime Gym Equipment Repair Blog`,
-    description: post.description || `Read about ${post.title} on H-Prime Gym Equipment Repair blog`,
+    title,
+    description,
+    alternates: { canonical: url },
+    openGraph: {
+      title,
+      description,
+      url,
+      type: 'article',
+      locale: 'en_US',
+      siteName: SITE_NAME,
+      publishedTime: post.publishedDate ?? undefined,
+      modifiedTime: modified ?? undefined,
+      authors: [SITE_NAME],
+      images: [{ url: image, alt: title }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [image],
+    },
+    robots: robotsFor(isPostIndexable(slug, post.publishedDate)),
   };
 }
 
-export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function BlogPostPage({ params }: PageProps) {
   const { slug } = await params;
   const post = await getPostBySlug(slug);
 
@@ -33,19 +72,17 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     notFound();
   }
 
-  const { displayTitle, title, description, publishedDate, author, image, content } = post;
-  
-  // Use displayTitle if available, or convert slug to readable title
-  const articleTitle = displayTitle || title
-    .split('-')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
-  
+  const { description, publishedDate, updatedDate, author, image, content } = post;
+  const articleTitle = postHeadline(post);
+  const schema = articleSchema({ slug, headline: articleTitle, description, publishedDate, updatedDate, image });
+
   // Get Markdoc node from content
   const { node } = await content();
 
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+
       {/* Back Button */}
       <section className="py-6 bg-gray-50 border-b border-gray-200">
         <div className="container mx-auto px-4">
@@ -86,11 +123,14 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
               {publishedDate && (
                 <span className="flex items-center gap-2">
                   <Calendar className="w-5 h-5 text-orange-600" />
-                  {new Date(publishedDate).toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                  })}
+                  <time dateTime={publishedDate}>
+                    {new Date(`${publishedDate}T00:00:00Z`).toLocaleDateString('en-US', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                      timeZone: 'UTC',
+                    })}
+                  </time>
                 </span>
               )}
               {author && (

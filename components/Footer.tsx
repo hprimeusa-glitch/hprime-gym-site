@@ -98,7 +98,16 @@ export default function Footer() {
               {PHONE_DISPLAY}
             </a>
 
-            <h4 className="text-white font-semibold mb-3 mt-6">Legal</h4>
+            <h4 className="text-white font-semibold mb-3 mt-6">Resources</h4>
+            <ul className="space-y-2 text-sm mb-6">
+              <li>
+                <Link href="/blog" className="hover:text-white transition">
+                  Blog
+                </Link>
+              </li>
+            </ul>
+
+            <h4 className="text-white font-semibold mb-3">Legal</h4>
             <ul className="space-y-2 text-xs">
               <li>
                 <Link href="/parts" className="hover:text-white transition">
