@@ -1,10 +1,11 @@
-import Link from 'next/link';
 import Hero from '@/components/Hero';
 import Reviews from '@/components/Reviews';
 import WhyChooseUs from '@/components/WhyChooseUs';
+import ApplianceCards from '@/components/ApplianceCards';
 import type { BrandContent } from '@/lib/data/brandContent';
 import type { Brand } from '@/lib/data/brands';
 import { serviceContent } from '@/lib/data/serviceContent';
+import { getBrandEquipmentPhoto } from '@/lib/data/brandPhotos';
 import { PHONE_NUMBER, PHONE_DISPLAY } from '@/lib/utils';
 
 interface Props {
@@ -45,28 +46,16 @@ export default function BrandDeepPage({ content, brand, guideSlugs }: Props) {
       />
 
       {/* Written service guides that cover this brand's equipment */}
-      {guideSlugs.length > 0 && (
-        <section className="py-12 bg-white">
-          <div className="container mx-auto px-4 md:px-6 lg:px-8">
-            <h2 className="text-2xl md:text-3xl font-bold text-center mb-8">
-              Repair guides for {brand.name} equipment
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto">
-              {guideSlugs.map((slug) => (
-                <Link
-                  key={slug}
-                  href={`/services/${slug}-repair`}
-                  className="bg-gray-50 p-5 rounded-lg hover:shadow-lg transition text-center border border-gray-200"
-                >
-                  <span className="font-semibold text-gray-900">
-                    {serviceContent[slug].name.charAt(0).toUpperCase() + serviceContent[slug].name.slice(1)} repair in Denver
-                  </span>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
+      <ApplianceCards
+        heading={`Repair guides for ${brand.name} equipment`}
+        items={guideSlugs.map((slug) => ({
+          key: slug,
+          href: `/services/${slug}-repair`,
+          title: `${serviceContent[slug].name.charAt(0).toUpperCase() + serviceContent[slug].name.slice(1)} repair in Denver`,
+          image: getBrandEquipmentPhoto(brand.slug, slug),
+          alt: `${brand.name} ${serviceContent[slug].name}`,
+        }))}
+      />
 
       <WhyChooseUs />
 

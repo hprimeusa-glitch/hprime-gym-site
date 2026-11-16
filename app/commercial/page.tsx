@@ -7,6 +7,7 @@ import { PhoneCall, AlertTriangle } from 'lucide-react';
 import { PHONE_DISPLAY, PHONE_NUMBER, SERVICE_CALL_FEE } from '@/lib/utils';
 import { generateLocalBusinessSchema, generateFAQSchema } from '@/lib/seo/schema';
 import { brands } from '@/lib/data/brands';
+import { appliances } from '@/lib/data/appliances';
 import {
   commercialIntro,
   commercialSections,
@@ -166,19 +167,30 @@ export default function CommercialPage() {
           <div className="max-w-5xl mx-auto">
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6 text-center">Commercial equipment we repair</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-              {commercialEquipment.map((e) => (
-                <div key={e.title} className="bg-gray-50 rounded-lg border border-gray-200 p-5">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">{e.title}</h3>
-                  <ul className="space-y-1">
-                    {e.issues.map((issue) => (
-                      <li key={issue} className="flex items-center gap-2 text-sm text-gray-600">
-                        <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: '#FFC704' }} />
-                        {issue}
-                      </li>
-                    ))}
-                  </ul>
+              {commercialEquipment.map((e) => {
+                const image = appliances.find((a) => a.slug === e.equipment)?.image;
+                return (
+                <div key={e.title} className="bg-gray-50 rounded-lg border border-gray-200 overflow-hidden">
+                  {image && (
+                    <div className="w-full h-40 overflow-hidden bg-gray-100">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={image} alt={e.title} loading="lazy" className="w-full h-full object-cover" />
+                    </div>
+                  )}
+                  <div className="p-5">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">{e.title}</h3>
+                    <ul className="space-y-1">
+                      {e.issues.map((issue) => (
+                        <li key={issue} className="flex items-center gap-2 text-sm text-gray-600">
+                          <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: '#FFC704' }} />
+                          {issue}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
-              ))}
+                );
+              })}
             </div>
             <p className="mt-6 text-center text-gray-600">
               Written guides: <Link href="/services/treadmill-repair" className="underline hover:text-[#1B2A4A]">treadmill repair</Link>,{' '}

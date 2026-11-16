@@ -141,13 +141,14 @@ export const commercialBrandSlugs: string[] = [
   'freemotion', 'keiser', 'octane', 'hoist', 'assault-fitness',
 ];
 
-export const commercialEquipment: { title: string; issues: string[] }[] = [
-  { title: 'Commercial treadmills', issues: ['Belt slipping or worn', 'Speed and motor faults', 'Console and display errors', 'Incline motor'] },
-  { title: 'Ellipticals and cross trainers', issues: ['Grinding or clicking', 'Resistance not working', 'Pedal arm looseness', 'Console failure'] },
-  { title: 'Upright, recumbent and spin bikes', issues: ['Resistance not adjusting', 'Brake pads and flywheel noise', 'Pedals and cranks', 'Drive belt'] },
-  { title: 'Rowing machines', issues: ['Chain or strap wear', 'Resistance inconsistency', 'Monitor failure', 'Seat rollers'] },
-  { title: 'Stair climbers and stepmills', issues: ['Step mechanism', 'Drive chain', 'Console errors', 'Speed inconsistency'] },
-  { title: 'Selectorized and plate loaded strength', issues: ['Frayed or snapped cables', 'Pulleys', 'Weight stack guide rods', 'Upholstery and adjustments'] },
+/** `equipment` is the appliance slug whose photo goes on the card. */
+export const commercialEquipment: { title: string; equipment: string; issues: string[] }[] = [
+  { title: 'Commercial treadmills', equipment: 'treadmill', issues: ['Belt slipping or worn', 'Speed and motor faults', 'Console and display errors', 'Incline motor'] },
+  { title: 'Ellipticals and cross trainers', equipment: 'elliptical', issues: ['Grinding or clicking', 'Resistance not working', 'Pedal arm looseness', 'Console failure'] },
+  { title: 'Upright, recumbent and spin bikes', equipment: 'spin-bike', issues: ['Resistance not adjusting', 'Brake pads and flywheel noise', 'Pedals and cranks', 'Drive belt'] },
+  { title: 'Rowing machines', equipment: 'rowing-machine', issues: ['Chain or strap wear', 'Resistance inconsistency', 'Monitor failure', 'Seat rollers'] },
+  { title: 'Stair climbers and stepmills', equipment: 'stair-machine', issues: ['Step mechanism', 'Drive chain', 'Console errors', 'Speed inconsistency'] },
+  { title: 'Selectorized and plate loaded strength', equipment: 'weight-machine', issues: ['Frayed or snapped cables', 'Pulleys', 'Weight stack guide rods', 'Upholstery and adjustments'] },
 ];
 
 export const commercialFaqs: { q: string; a: string }[] = [

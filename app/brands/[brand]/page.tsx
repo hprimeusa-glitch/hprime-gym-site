@@ -6,11 +6,13 @@ import Hero from '@/components/Hero';
 import Reviews from '@/components/Reviews';
 import SEOContent from '@/components/SEOContent';
 import BrandDeepPage from '@/components/BrandDeepPage';
+import ApplianceCards from '@/components/ApplianceCards';
 import { brands } from '@/lib/data/brands';
 import { appliances, hubRedirects } from '@/lib/data/appliances';
 import { serviceContent } from '@/lib/data/serviceContent';
 import { getAppliancesForBrand } from '@/lib/data/serviceBrands';
 import { getEquipmentImagesForBrand } from '@/lib/data/equipmentImages';
+import { getBrandEquipmentPhoto } from '@/lib/data/brandPhotos';
 import { generatePageMetadata } from '@/lib/seo/metadata';
 import { generateLocalBusinessSchema, generateServiceSchema, generateBreadcrumbSchema, generateFAQSchema } from '@/lib/seo/schema';
 import { getBrandContent } from '@/lib/data/brandContent';
@@ -118,42 +120,32 @@ export default async function BrandRepairPage({ params }: PageProps) {
       />
       
       {/* Equipment Section - Filtered */}
-      <section className="py-12 bg-white">
-        <div className="container mx-auto px-4 md:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-center mb-8">
-            {brand.name} Gym Equipment We Service
-          </h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
-            {relevantAppliances.map((appliance) => (
-              <Link
-                key={appliance.slug}
-                href={`/brands/${brandSlug}/services/${appliance.slug}-repair`}
-                prefetch={false}
-                className="bg-gray-50 p-6 rounded-lg hover:shadow-lg transition text-center border border-gray-200"
-              >
-                <h3 className="font-semibold text-gray-900 text-lg">{appliance.name}</h3>
-                <p className="text-sm text-gray-600 mt-2">
-                  {brand.name} {appliance.name} Repair
-                </p>
-              </Link>
+      <ApplianceCards
+        heading={`${brand.name} Gym Equipment We Service`}
+        items={relevantAppliances.map((appliance) => ({
+          key: appliance.slug,
+          href: `/brands/${brandSlug}/services/${appliance.slug}-repair`,
+          title: appliance.name,
+          note: `${brand.name} ${appliance.name} Repair`,
+          image: getBrandEquipmentPhoto(cleanSlug, appliance.slug),
+          alt: `${brand.name} ${appliance.name}`,
+        }))}
+      >
+        {guideSlugs.length > 0 && (
+          <p className="text-center text-gray-700 mt-8 max-w-3xl mx-auto">
+            Symptoms, error codes and what to try before you call:{' '}
+            {guideSlugs.map((slug, i) => (
+              <span key={slug}>
+                {i > 0 && (i === guideSlugs.length - 1 ? ' and ' : ', ')}
+                <Link href={`/services/${slug}-repair`} className="font-semibold hover:underline" style={{ color: '#398ffc' }}>
+                  {serviceContent[slug].name.toLowerCase()} repair in Denver
+                </Link>
+              </span>
             ))}
-          </div>
-          {guideSlugs.length > 0 && (
-            <p className="text-center text-gray-700 mt-8 max-w-3xl mx-auto">
-              Symptoms, error codes and what to try before you call:{' '}
-              {guideSlugs.map((slug, i) => (
-                <span key={slug}>
-                  {i > 0 && (i === guideSlugs.length - 1 ? ' and ' : ', ')}
-                  <Link href={`/services/${slug}-repair`} className="font-semibold hover:underline" style={{ color: '#398ffc' }}>
-                    {serviceContent[slug].name.toLowerCase()} repair in Denver
-                  </Link>
-                </span>
-              ))}
-              .
-            </p>
-          )}
-        </div>
-      </section>
+            .
+          </p>
+        )}
+      </ApplianceCards>
       
       {/* Why Choose Us Section */}
       <section className="py-16 bg-gray-50">
