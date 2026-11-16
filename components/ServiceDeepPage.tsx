@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Hero from '@/components/Hero';
 import Reviews from '@/components/Reviews';
+import WhyChooseUs from '@/components/WhyChooseUs';
 import type { ServiceContent } from '@/lib/data/serviceContent';
 import { brands } from '@/lib/data/brands';
 import { PHONE_NUMBER, PHONE_DISPLAY } from '@/lib/utils';
@@ -37,6 +38,35 @@ export default function ServiceDeepPage({ content, image, brandSlugs }: Props) {
     <>
       <Hero title={content.h1} subtitle={content.subtitle} applianceImage={image} />
 
+      <WhyChooseUs />
+
+      {/* Brands that make this equipment */}
+      {linkedBrands.length > 0 && (
+        <section className="py-12 bg-white">
+          <div className="container mx-auto px-4 md:px-6 lg:px-8">
+            <h2 className="text-2xl md:text-3xl font-bold text-center mb-8">
+              {content.name} brands we repair
+            </h2>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 max-w-5xl mx-auto">
+              {linkedBrands.map((b) => (
+                <Link
+                  key={b.slug}
+                  href={`/brands/${b.slug}-repair`}
+                  prefetch={false}
+                  className="bg-gray-50 p-5 rounded-lg hover:shadow-lg transition text-center border border-gray-200"
+                >
+                  <span className="font-semibold text-gray-900">{b.name}</span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Reviews come straight from the profile: the component owns its own data */}
+      <Reviews />
+
+      {/* Long-form text below reviews so the selling blocks come first */}
       {/* Intro */}
       <section className="py-12 bg-white">
         <div className="container mx-auto px-4">
@@ -93,32 +123,6 @@ export default function ServiceDeepPage({ content, image, brandSlugs }: Props) {
           </div>
         </section>
       ))}
-
-      {/* Brands that make this equipment */}
-      {linkedBrands.length > 0 && (
-        <section className="py-12 bg-white">
-          <div className="container mx-auto px-4 md:px-6 lg:px-8">
-            <h2 className="text-2xl md:text-3xl font-bold text-center mb-8">
-              {content.name} brands we repair
-            </h2>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 max-w-5xl mx-auto">
-              {linkedBrands.map((b) => (
-                <Link
-                  key={b.slug}
-                  href={`/brands/${b.slug}-repair`}
-                  prefetch={false}
-                  className="bg-gray-50 p-5 rounded-lg hover:shadow-lg transition text-center border border-gray-200"
-                >
-                  <span className="font-semibold text-gray-900">{b.name}</span>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* Reviews come straight from the profile: the component owns its own data */}
-      <Reviews />
 
       {/* FAQ */}
       <section id="faq" className="py-16 bg-white scroll-mt-24">

@@ -3,7 +3,6 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import Hero from '@/components/Hero';
 import Reviews from '@/components/Reviews';
-import WhyChooseUs from "@/components/WhyChooseUs";
 import BrandsSection from "@/components/BrandsSection";
 import SEOContent from '@/components/SEOContent';
 import { CheckCircle, MapPin, Wrench, Zap } from 'lucide-react';
@@ -122,14 +121,6 @@ export default async function CityBrandApplianceRepairPage({ params }: PageProps
         </div>
       </section>
       
-      {/* SEO Content */}
-      <SEOContent 
-        city={citySlug} 
-        brand={cleanBrandSlug} 
-        appliance={cleanApplianceSlug}
-        county={city.county}
-      />
-      
       {/* Why Choose Us Section */}
       <section className="py-12 bg-gray-50">
         <div className="container mx-auto px-4 md:px-6 lg:px-8">
@@ -199,10 +190,16 @@ export default async function CityBrandApplianceRepairPage({ params }: PageProps
         </section>
       )}
       
-      {/* Reviews Section */}
-      <WhyChooseUs />
       <BrandsSection />
       <Reviews />
+
+      {/* Long-form SEO text sits below reviews so the selling blocks come first */}
+      <SEOContent 
+        city={citySlug} 
+        brand={cleanBrandSlug} 
+        appliance={cleanApplianceSlug}
+        county={city.county}
+      />
     </>
   );
 }

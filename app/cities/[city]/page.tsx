@@ -134,9 +134,6 @@ export default async function CityPage({ params }: PageProps) {
         </div>
       </section>
 
-      {/* 3. SEO Content — Same-Day Gym Equipment Repair in {city} */}
-      <SEOContent city={citySlug} county={city.county} />
-
       {/* 4. Our Services — equipment grid with photos */}
       <section id="our-services" className="py-16 bg-white">
         <div className="container mx-auto px-4">
@@ -186,6 +183,9 @@ export default async function CityPage({ params }: PageProps) {
 
       {/* 6. Reviews */}
       <Reviews />
+
+      {/* Long-form SEO text sits below reviews so the selling blocks come first */}
+      <SEOContent city={citySlug} county={city.county} />
 
       {/* 7. Nearby Cities */}
       {nearbyCities.length > 0 && (
