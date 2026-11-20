@@ -1,11 +1,11 @@
 import { config, fields, collection, singleton } from '@keystatic/core';
 
 export default config({
+  // Local mode: the gym site has no Keystatic Cloud project of its own, and the
+  // previous 'h-prime/h-prime-site' project belongs to the appliance site (wrong repo).
+  // Posts are edited in `npm run dev` at /keystatic or committed as content/posts/*.mdoc.
   storage: {
-    kind: 'cloud',
-  },
-  cloud: {
-    project: 'h-prime/h-prime-site',
+    kind: 'local',
   },
   
   collections: {
